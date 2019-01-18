@@ -4,7 +4,9 @@ using System.Text;
 
 namespace LINQ.classes
 {
-    class RootObject
+    public class RootObject
     {
+        public string type { get; set; }
+        public List<Feature> features { get; set; }
     }
 }
