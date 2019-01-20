@@ -44,11 +44,37 @@ namespace LINQ
                 Console.WriteLine($"{ counter++}.{i.properties.neighborhood.ToString()}");
             }
         }
- 
 
-        
+        static void Question(Feature[] features)
+        {
+            //1. print all neighborhoods
+            var allneighborhoods = from f in features
+                                   select f.properties.neighborhood;
+            foreach(var prop in allneighborhoods)
+            {
+                Console.WriteLine(prop);
+            }
 
+            Console.WriteLine();
+            Console.WriteLine("-----------------------");
+            Console.WriteLine();
 
+            //2. filter out neighborhoods without names
+            var hoodswithnames = from n in allneighborhoods
+                                    //name is not empty
+                                    where n != ""
+                                    select n;
+            foreach(var prop in hoodswithnames)
+            {
+                Console.WriteLine(prop);
+            }
+
+            //3. remove duplicates
+
+            //4. consolidate previous queries into a single query
+
+            //5. rewrite a question using LINQ, not lambda statement
+        }
     }
 }
 
