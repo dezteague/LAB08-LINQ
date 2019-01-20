@@ -69,27 +69,36 @@ namespace LINQ
                 Console.WriteLine(prop);
             }
 
+            Console.WriteLine();
+            Console.WriteLine("-----------------------");
+            Console.WriteLine();
+
             //3. remove duplicates
+            var nodupes = hoodswithnames.Distinct();
+            foreach(var prop in hoodswithnames)
+            {
+                Console.WriteLine(prop);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("-----------------------");
+            Console.WriteLine();
 
             //4. consolidate previous queries into a single query
+            var consolidatedqueries = features.Where(n => n.properties.neighborhood.Length > 0)
+                .GroupBy(g => g.properties.neighborhood)
+                .Select(s => s.First());
+            foreach(var prop in consolidatedqueries)
+            {
+                Console.WriteLine(prop.properties.neighborhood);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("-----------------------");
+            Console.WriteLine();
 
             //5. rewrite a question using LINQ, not lambda statement
+            var rewrite = allneighborhoods.Where(i => i != "");
         }
     }
 }
-
-//LINQ LOGIC
-//      foreach(Properties n in result)
-
-//   
-//      result = from n in list
-//      where n.neighborhood.Length != 0
-//      select n;
-
-
-//       result = from n in list
-//       where n.Duplicate == false
-//       select n;
-
-//    4. Rewrite the queries from above, and consolidate all into one single query.
-//    5. Rewrite at least one of these questions only using the opposing method(example: Use LINQ instead of a Lambda and vice versa.)
