@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using LINQ.classes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace LINQ
 {
@@ -12,25 +13,54 @@ namespace LINQ
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            using (StreamReader reader = File.OpenText(@"../../../../LINQ.json"))
+
+            string path = "../../../../LINQ.json";
+            string text = "";
+
+            //read in the file
+            using (StreamReader reader = File.OpenText(path))
             {
-                JObject obj = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
-                Console.WriteLine(obj);
+                text = reader.ReadToEnd();
+            }
+
+            //invoke method, bringing in the contents to convert
+            ConvertJSON(text);
+        }
+
+        //bring in json data, convert to c# object
+        static void ConvertJSON(string data)
+        {
+            //set up the object
+            RootObject obj = JsonConvert.DeserializeObject<RootObject>(data);
+
+            var feats = obj.features;
+
+            var item = from n in feats
+                       select n;
+
+            int counter = 0;
+            foreach(var i in item)
+            {
+                Console.WriteLine($"{ counter++}.{i.properties.neighborhood.ToString()}");
             }
         }
+ 
+
+        
+
+
     }
 }
 
 //LINQ LOGIC
-//    1. Output all of the neighborhoods in this data list
 //      foreach(Properties n in result)
 
-//    2. Filter out all the neighborhoods that do not have any names
+//   
 //      result = from n in list
 //      where n.neighborhood.Length != 0
 //      select n;
 
-//    3. Remove the Duplicates
+
 //       result = from n in list
 //       where n.Duplicate == false
 //       select n;
