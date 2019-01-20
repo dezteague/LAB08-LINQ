@@ -6,8 +6,8 @@ namespace LINQ.classes
 {
     public class Feature
     {
-        public string type { get; set; }
-        public Geometry geometry { get; set; }
-        public Properties properties { get; set; }
+        public string Type { get; set; }
+        public Geometry Geometry { get; set; }
+        public Properties Properties { get; set; }
     }
 }

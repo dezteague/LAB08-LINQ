@@ -6,7 +6,7 @@ namespace LINQ.classes
 {
     public class RootObject
     {
-        public string type { get; set; }
-        public List<Feature> features { get; set; }
+        public string Type { get; set; }
+        public List<Feature> Features { get; set; }
     }
 }

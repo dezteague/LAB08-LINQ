@@ -12,8 +12,13 @@ namespace LINQ
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("NEIGHBORHOODS IN MANHATTAN");
+            ConvertJSON();
+        }
 
+        //convert json data into c# object
+        static void ConvertJSON()
+        {
             string path = "../../../../LINQ.json";
             string text = "";
 
@@ -23,82 +28,58 @@ namespace LINQ
                 text = reader.ReadToEnd();
             }
 
-            //invoke method, bringing in the contents to convert
-            ConvertJSON(text);
-        }
+            //set up the deserialized object
+            var obj = JsonConvert.DeserializeObject<RootObject>(text);
 
-        //bring in json data, convert to c# object
-        static void ConvertJSON(string data)
-        {
-            //set up the object
-            RootObject obj = JsonConvert.DeserializeObject<RootObject>(data);
-
-            var feats = obj.features;
-
-            var item = from n in feats
-                       select n;
-
-            int counter = 0;
-            foreach(var i in item)
-            {
-                Console.WriteLine($"{ counter++}.{i.properties.neighborhood.ToString()}");
-            }
-        }
-
-        static void Question(Feature[] features)
-        {
             //1. print all neighborhoods
-            var allneighborhoods = from f in features
-                                   select f.properties.neighborhood;
-            foreach(var prop in allneighborhoods)
+            var allneighborhoods = obj.Features.Select(f => f.Properties.Neighborhood);
+
+            Console.WriteLine(">>>>>all neighborhoods<<<<<");
+            foreach (var prop in allneighborhoods)
             {
                 Console.WriteLine(prop);
             }
-
-            Console.WriteLine();
-            Console.WriteLine("-----------------------");
-            Console.WriteLine();
 
             //2. filter out neighborhoods without names
             var hoodswithnames = from n in allneighborhoods
-                                    //name is not empty
-                                    where n != ""
-                                    select n;
-            foreach(var prop in hoodswithnames)
+                                     //name is not empty
+                                 where n != ""
+                                 select n;
+
+            Console.WriteLine(">>>>>Display neighborhoods with names<<<<<");
+            foreach (var prop in hoodswithnames)
             {
                 Console.WriteLine(prop);
             }
-
-            Console.WriteLine();
-            Console.WriteLine("-----------------------");
-            Console.WriteLine();
 
             //3. remove duplicates
             var nodupes = hoodswithnames.Distinct();
-            foreach(var prop in hoodswithnames)
+
+            Console.WriteLine(">>>>>Remove neighborhoods duplicates<<<<<");
+            foreach (var prop in hoodswithnames)
             {
                 Console.WriteLine(prop);
             }
 
-            Console.WriteLine();
-            Console.WriteLine("-----------------------");
-            Console.WriteLine();
-
             //4. consolidate previous queries into a single query
-            var consolidatedqueries = features.Where(n => n.properties.neighborhood.Length > 0)
-                .GroupBy(g => g.properties.neighborhood)
+            var consolidatedqueries = obj.Features.Where(n => n.Properties.Neighborhood.Length > 0)
+                .GroupBy(g => g.Properties.Neighborhood)
                 .Select(s => s.First());
-            foreach(var prop in consolidatedqueries)
-            {
-                Console.WriteLine(prop.properties.neighborhood);
-            }
+            Console.WriteLine(">>>>>Consolidate queries<<<<<");
 
-            Console.WriteLine();
-            Console.WriteLine("-----------------------");
-            Console.WriteLine();
+            foreach (var prop in consolidatedqueries)
+            {
+                Console.WriteLine(prop.Properties.Neighborhood);
+            }
 
             //5. rewrite a question using LINQ, not lambda statement
             var rewrite = allneighborhoods.Where(i => i != "");
+            Console.WriteLine(">>>>>Rewrite 2nd query<<<<<");
+
+            foreach (var prop in hoodswithnames)
+            {
+                Console.WriteLine(prop);
+            }
         }
     }
 }
