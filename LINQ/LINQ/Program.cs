@@ -34,7 +34,10 @@ namespace LINQ
             //1. print all neighborhoods
             var allneighborhoods = obj.Features.Select(f => f.Properties.Neighborhood);
 
+            Console.WriteLine();
             Console.WriteLine(">>>>>all neighborhoods<<<<<");
+            Console.WriteLine();
+
             foreach (var prop in allneighborhoods)
             {
                 Console.WriteLine(prop);
@@ -45,8 +48,10 @@ namespace LINQ
                                      //name is not empty
                                  where n != ""
                                  select n;
-
+            Console.WriteLine();
             Console.WriteLine(">>>>>Display neighborhoods with names<<<<<");
+            Console.WriteLine();
+
             foreach (var prop in hoodswithnames)
             {
                 Console.WriteLine(prop);
@@ -55,8 +60,11 @@ namespace LINQ
             //3. remove duplicates
             var nodupes = hoodswithnames.Distinct();
 
+            Console.WriteLine();
             Console.WriteLine(">>>>>Remove neighborhoods duplicates<<<<<");
-            foreach (var prop in hoodswithnames)
+            Console.WriteLine();
+
+            foreach (var prop in nodupes)
             {
                 Console.WriteLine(prop);
             }
@@ -65,7 +73,10 @@ namespace LINQ
             var consolidatedqueries = obj.Features.Where(n => n.Properties.Neighborhood.Length > 0)
                 .GroupBy(g => g.Properties.Neighborhood)
                 .Select(s => s.First());
+
+            Console.WriteLine();
             Console.WriteLine(">>>>>Consolidate queries<<<<<");
+            Console.WriteLine();
 
             foreach (var prop in consolidatedqueries)
             {
@@ -74,7 +85,10 @@ namespace LINQ
 
             //5. rewrite a question using LINQ, not lambda statement
             var rewrite = allneighborhoods.Where(i => i != "");
+
+            Console.WriteLine();
             Console.WriteLine(">>>>>Rewrite 2nd query<<<<<");
+            Console.WriteLine();
 
             foreach (var prop in hoodswithnames)
             {
