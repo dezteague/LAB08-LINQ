@@ -6,7 +6,7 @@ namespace LINQ.classes
 {
     public class Geometry
     {
-        public string type { get; set; }
-        public List<double> coordinates { get; set; }
+        public string Type { get; set; }
+        public List<double> Coordinates { get; set; }
     }
 }

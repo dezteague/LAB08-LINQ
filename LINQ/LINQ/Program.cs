@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using LINQ.classes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace LINQ
 {
@@ -11,29 +12,88 @@ namespace LINQ
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            using (StreamReader reader = File.OpenText(@"../../../../LINQ.json"))
+            Console.WriteLine("NEIGHBORHOODS IN MANHATTAN");
+            ConvertJSON();
+        }
+
+        //convert json data into c# object
+        static void ConvertJSON()
+        {
+            string path = "../../../../LINQ.json";
+            string text = "";
+
+            //read in the file
+            using (StreamReader reader = File.OpenText(path))
             {
-                JObject obj = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
-                Console.WriteLine(obj);
+                text = reader.ReadToEnd();
+            }
+
+            //set up the deserialized object
+            var obj = JsonConvert.DeserializeObject<RootObject>(text);
+
+            //1. print all neighborhoods
+            var allneighborhoods = obj.Features.Select(f => f.Properties.Neighborhood);
+
+            Console.WriteLine();
+            Console.WriteLine(">>>>>all neighborhoods<<<<<");
+            Console.WriteLine();
+
+            foreach (var prop in allneighborhoods)
+            {
+                Console.WriteLine(prop);
+            }
+
+            //2. filter out neighborhoods without names
+            var hoodswithnames = from n in allneighborhoods
+                                     //name is not empty
+                                 where n != ""
+                                 select n;
+            Console.WriteLine();
+            Console.WriteLine(">>>>>Display neighborhoods with names<<<<<");
+            Console.WriteLine();
+
+            foreach (var prop in hoodswithnames)
+            {
+                Console.WriteLine(prop);
+            }
+
+            //3. remove duplicates
+            var nodupes = hoodswithnames.Distinct();
+
+            Console.WriteLine();
+            Console.WriteLine(">>>>>Remove neighborhoods duplicates<<<<<");
+            Console.WriteLine();
+
+            foreach (var prop in nodupes)
+            {
+                Console.WriteLine(prop);
+            }
+
+            //4. consolidate previous queries into a single query
+            var consolidatedqueries = obj.Features.Where(n => n.Properties.Neighborhood.Length > 0)
+                .GroupBy(g => g.Properties.Neighborhood)
+                .Select(s => s.First());
+
+            Console.WriteLine();
+            Console.WriteLine(">>>>>Consolidate queries<<<<<");
+            Console.WriteLine();
+
+            foreach (var prop in consolidatedqueries)
+            {
+                Console.WriteLine(prop.Properties.Neighborhood);
+            }
+
+            //5. rewrite a question using LINQ, not lambda statement
+            var rewrite = allneighborhoods.Where(i => i != "");
+
+            Console.WriteLine();
+            Console.WriteLine(">>>>>Rewrite 2nd query<<<<<");
+            Console.WriteLine();
+
+            foreach (var prop in hoodswithnames)
+            {
+                Console.WriteLine(prop);
             }
         }
     }
 }
-
-//LINQ LOGIC
-//    1. Output all of the neighborhoods in this data list
-//      foreach(Properties n in result)
-
-//    2. Filter out all the neighborhoods that do not have any names
-//      result = from n in list
-//      where n.neighborhood.Length != 0
-//      select n;
-
-//    3. Remove the Duplicates
-//       result = from n in list
-//       where n.Duplicate == false
-//       select n;
-
-//    4. Rewrite the queries from above, and consolidate all into one single query.
-//    5. Rewrite at least one of these questions only using the opposing method(example: Use LINQ instead of a Lambda and vice versa.)
