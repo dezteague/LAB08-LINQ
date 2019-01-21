@@ -10,6 +10,10 @@ Read in a JSON file that contains a data set of location information for propert
 * Create neighborhood list
 * Filter the list and print results
 
-## Output Example:
+## Output Examples:
 
-Collaborators: Joe Pumphrey, Jason Few, Xia Liu, Clarice Costello
+![all hoods](https://github.com/dezteague/LAB08-LINQ/blob/master/Assets/allneighborhoods.JPG)
+![distinct names](https://github.com/dezteague/LAB08-LINQ/blob/master/Assets/onlyhoodswithnames.JPG)
+![remove dupes](https://github.com/dezteague/LAB08-LINQ/blob/master/Assets/removeduplicates.JPG)
+
+Collaborators: Joe Pumphrey, Jason Few, Xia Liu, Clarice Costello, Amanda Iverson
